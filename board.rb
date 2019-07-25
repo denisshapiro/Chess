@@ -14,6 +14,17 @@ class Board
     @squares[y_coord][x_coord] = char
   end
 
+  def piece_at(x_coord, y_coord)
+    y_coord = 7 - ((y_coord + 8) % 8)
+    @squares[y_coord][x_coord]
+  end
+
+  def move(curr_location, destination)
+    piece = piece_at(curr_location[0], curr_location[1])
+    change(curr_location[0], curr_location[1], ' ')
+    change(destination[0], destination[1], piece)
+  end
+
   def display_board
     @squares.each_with_index do |row, index|
       puts @row_separator
