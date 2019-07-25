@@ -1,4 +1,6 @@
 require_relative 'piece_hash.rb'
+require_relative './pieces/piece.rb'
+require_relative './pieces/bishop.rb'
 
 # Some useful helper functions
 module Helpers
@@ -15,6 +17,16 @@ module Helpers
   def self.corresponding_hash(color)
     return WHITE_PIECES if color == 'WHITE'
     return BLACK_PIECES if color == 'BLACK'
+  end
+
+  def self.setup(hash, x)
+    case
+    when [0, 7].include?(x) then hash[:Rook]
+    when [1, 6].include?(x) then hash[:Knight]
+    when [2, 5].include?(x) then hash[:Bishop]
+    when x == 3 then hash[:Queen]
+    when x == 4 then hash[:King]
+    end
   end
 
   def self.opposite_color(color)

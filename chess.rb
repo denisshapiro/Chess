@@ -2,6 +2,9 @@ require 'yaml'
 require_relative 'board.rb'
 require_relative 'piece_hash.rb'
 require_relative 'helpers.rb'
+require_relative './pieces/piece.rb'
+require_relative './pieces/bishop.rb'
+require_relative './pieces/pawn.rb'
 
 # Class to initialize chess, to be initialized by Play class
 class Chess
@@ -78,28 +81,18 @@ class Chess
     @turn == 'player' ? @turn = 'computer' : @turn = 'player'
   end
 
-  def setup(hash, x)
-    case
-    when [0, 7].include?(x) then hash[:Rook]
-    when [1, 6].include?(x) then hash[:Knight]
-    when [2, 5].include?(x) then hash[:Bishop]
-    when x == 3 then hash[:Queen]
-    when x == 4 then hash[:King]
-    end
-  end
-
   def arrange_board(bottom_color = @player_color, top_color = @computer_color)
     top_hash = Helpers.corresponding_hash(top_color)
     bottom_hash = Helpers.corresponding_hash(bottom_color)
     for x in 0..7
       for y in 0..1
-        y == 1 ? @board.change(x, y, bottom_hash[:Pawn]) : @board.change(x, y, setup(bottom_hash, x))
+        y == 1 ? @board.change(x, y, bottom_hash[:Pawn]) : @board.change(x, y, Helpers.setup(bottom_hash, x))
       end
     end
 
     for x in 0..7
       for y in 6..7
-        y == 6 ? @board.change(x, y, top_hash[:Pawn]) : @board.change(x, y, setup(top_hash, x))
+        y == 6 ? @board.change(x, y, top_hash[:Pawn]) : @board.change(x, y, Helpers.setup(top_hash, x))
       end
     end
     @board.display_board
@@ -114,7 +107,23 @@ class Chess
       puts 'Enter piece to move and its destination (e.g. d2 to d3)'
       @input = gets.chomp.downcase
       @converted = Helpers.convert_input_to_pos(@input)
-      break if Helpers.valid_pos_and_dest(@input) && Helpers.players_piece?(@converted[0], @board, return_color)
+      break if valid?
+    end
+  end
+
+  def valid?
+    Helpers.valid_pos_and_dest(@input) &&
+      Helpers.players_piece?(@converted[0], @board, return_color) &&
+      find_type(@converted[0]).possible_moves.include?(@converted[1])
+  end
+
+  def find_type(pos, board = @board, color = return_color)
+    hash = Helpers.corresponding_hash(color)
+    piece = board.piece_at(pos[0], pos[1])
+    if piece == hash[:Bishop]
+      @piece = Bishop.new(pos, color, board)
+    elsif piece == hash[:Pawn]
+      @piece = Pawn.new(pos, color, board, @computer_color, @player_color)
     end
   end
 
@@ -128,4 +137,4 @@ class Chess
   end
 end
 
-c = Chess.new
+Chess.new
