@@ -1,3 +1,5 @@
+require_relative 'helpers.rb'
+
 # Class to create, modify, and display the chessboard
 class Board
   attr_accessor :squares
@@ -39,8 +41,13 @@ class Board
   def print_row(row_arr)
     str = ''
     row_arr.each do |square|
-      str += "| #{square} "
+      str += "| #{str_or_class(square)} "
     end
     str
+  end
+
+  # The only string should be ' ' reserved for empty squares
+  def str_or_class(square)
+    square.is_a?(String) ? square : square.piece
   end
 end

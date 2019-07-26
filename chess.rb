@@ -5,6 +5,10 @@ require_relative 'helpers.rb'
 require_relative './pieces/piece.rb'
 require_relative './pieces/bishop.rb'
 require_relative './pieces/pawn.rb'
+require_relative './pieces/rook.rb'
+require_relative './pieces/queen.rb'
+require_relative './pieces/king.rb'
+require_relative './pieces/knight.rb'
 
 # Class to initialize chess, to be initialized by Play class
 class Chess
@@ -81,18 +85,26 @@ class Chess
     @turn == 'player' ? @turn = 'computer' : @turn = 'player'
   end
 
+  def setup(x, y, color)
+    case
+    when [0, 7].include?(x) then Rook.new([x, y], color, @board)
+    when [1, 6].include?(x) then Knight.new([x, y], color, @board)
+    when [2, 5].include?(x) then Bishop.new([x, y], color, @board)
+    when x == 3 then Queen.new([x, y], color, @board)
+    when x == 4 then King.new([x, y], color, @board)
+    end
+  end
+
   def arrange_board(bottom_color = @player_color, top_color = @computer_color)
-    top_hash = Helpers.corresponding_hash(top_color)
-    bottom_hash = Helpers.corresponding_hash(bottom_color)
     for x in 0..7
       for y in 0..1
-        y == 1 ? @board.change(x, y, bottom_hash[:Pawn]) : @board.change(x, y, Helpers.setup(bottom_hash, x))
+        y == 1 ? @board.change(x, y, Pawn.new([x, y], bottom_color, @board, top_color, bottom_color)) : @board.change(x, y, setup(x, y, bottom_color))
       end
     end
 
     for x in 0..7
       for y in 6..7
-        y == 6 ? @board.change(x, y, top_hash[:Pawn]) : @board.change(x, y, Helpers.setup(top_hash, x))
+        y == 6 ? @board.change(x, y, Pawn.new([x, y], top_color, @board, top_color, bottom_color)) : @board.change(x, y, setup(x, y, top_color))
       end
     end
     @board.display_board
@@ -114,17 +126,7 @@ class Chess
   def valid?
     Helpers.valid_pos_and_dest(@input) &&
       Helpers.players_piece?(@converted[0], @board, return_color) &&
-      find_type(@converted[0]).possible_moves.include?(@converted[1])
-  end
-
-  def find_type(pos, board = @board, color = return_color)
-    hash = Helpers.corresponding_hash(color)
-    piece = board.piece_at(pos[0], pos[1])
-    if piece == hash[:Bishop]
-      @piece = Bishop.new(pos, color, board)
-    elsif piece == hash[:Pawn]
-      @piece = Pawn.new(pos, color, board, @computer_color, @player_color)
-    end
+      @board.piece_at(@converted[0][0], @converted[0][1]).generate_moves(@converted[0]).include?(@converted[1])
   end
 
   def play_game

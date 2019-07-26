@@ -19,16 +19,6 @@ module Helpers
     return BLACK_PIECES if color == 'BLACK'
   end
 
-  def self.setup(hash, x)
-    case
-    when [0, 7].include?(x) then hash[:Rook]
-    when [1, 6].include?(x) then hash[:Knight]
-    when [2, 5].include?(x) then hash[:Bishop]
-    when x == 3 then hash[:Queen]
-    when x == 4 then hash[:King]
-    end
-  end
-
   def self.opposite_color(color)
     color == 'WHITE' ? 'BLACK' : 'WHITE'
   end
@@ -52,7 +42,7 @@ module Helpers
 
   def self.players_piece?(pos, board, color)
     hash = corresponding_hash(color)
-    if hash.has_value?(board.piece_at(pos[0], pos[1]))
+    if hash.has_value?(board.piece_at(pos[0], pos[1]).piece)
       true
     else
       puts "You can't move that piece!"
