@@ -1,9 +1,9 @@
-#Ruby Chess
+# Ruby Chess
 
 A chess game made in Ruby which contains most of the rules of standard chess as well as
 an AI player to allow you to play against the computer. 
 
-##Requirements
+## Requirements
 You will need to have ruby 2.5.3 or above installed to play.
 
 ## Installation
