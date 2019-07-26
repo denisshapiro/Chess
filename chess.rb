@@ -126,12 +126,13 @@ class Chess
   def valid?
     Helpers.valid_pos_and_dest(@input) &&
       Helpers.players_piece?(@converted[0], @board, return_color) &&
-      @board.piece_at(@converted[0][0], @converted[0][1]).generate_moves(@converted[0]).include?(@converted[1])
+      @board.piece_at(@converted[0][0], @converted[0][1]).generate_moves(@converted[0]).include?(@converted)
   end
 
   def play_game
     loop do
       ask_for_input
+      @board.piece_at(@converted[0][0], @converted[0][1]).moves_made += 1
       @board.move(@converted[0], @converted[1])
       @board.display_board
       switch_turn

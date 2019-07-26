@@ -3,7 +3,7 @@ require File.expand_path('./helpers.rb')
 
 # Class to describe a Bishop's available moves in current possiton
 class Bishop < Piece
-  attr_accessor :possible_moves, :piece
+  attr_accessor :possible_moves, :piece, :moves_made
 
   def initialize(pos, color, current_board)
     @pos = pos
@@ -14,12 +14,12 @@ class Bishop < Piece
   end
 
   def generate_moves(pos)
-    @possible_moves = []
-    @possible_moves += up_right_diagonal_moves(pos)
-    @possible_moves += up_left_diagonal_moves(pos)
-    @possible_moves += down_left_diagonal_moves(pos)
-    @possible_moves += down_right_diagonal_moves(pos)
-    p @possible_moves
-    @possible_moves
+    possible_moves = []
+    possible_moves += up_right_diagonal_moves(pos)
+    possible_moves += up_left_diagonal_moves(pos)
+    possible_moves += down_left_diagonal_moves(pos)
+    possible_moves += down_right_diagonal_moves(pos)
+    p possible_moves
+    possible_moves
   end
 end

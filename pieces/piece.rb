@@ -38,17 +38,17 @@ class Piece
   def taken_by_opposite_king?(pos)
     piece_at_pos = @current_board.piece_at(pos[0], pos[1])
     opposite = Helpers.opposite_color(@color)
-    piece_at_pos == Helpers.corresponding_hash(opposite)[:King]
+    str_or_class(piece_at_pos) == Helpers.corresponding_hash(opposite)[:King]
   end
 
   def forward_line_moves(pos)
     moves = [] # max of 7
     curr = [pos[0], pos[1] + 1]
     until stop_condition(curr)
-      moves.push(curr)
+      moves.push([pos, curr])
       curr = [curr[0], curr[1] + 1]
     end
-    moves.push(curr) if eat_piece_possible?(curr)
+    moves.push([pos, curr]) if eat_piece_possible?(curr)
     moves
   end
 
@@ -56,10 +56,10 @@ class Piece
     moves = [] # max of 7
     curr = [pos[0], pos[1] - 1]
     until stop_condition(curr)
-      moves.push(curr)
+      moves.push([pos, curr])
       curr = [curr[0], curr[1] - 1] 
     end
-    moves.push(curr) if eat_piece_possible?(curr)
+    moves.push([pos, curr]) if eat_piece_possible?(curr)
     moves
   end
 
@@ -67,9 +67,10 @@ class Piece
     moves = [] # max of 7
     curr = [pos[0] + 1, pos[1]]
     until stop_condition(curr)
-      curr = [curr[0] + 1, curr[1]] 
+      moves.push([pos, curr])
+      curr = [curr[0] + 1, curr[1]]
     end
-    moves.push(curr) if eat_piece_possible?(curr)
+    moves.push([pos, curr]) if eat_piece_possible?(curr)
     moves
   end
 
@@ -77,10 +78,10 @@ class Piece
     moves = [] # max of 7
     curr = [pos[0] - 1, pos[1]]
     until stop_condition(curr)
-      moves.push(curr)
+      moves.push([pos, curr])
       curr = [curr[0] - 1, curr[1]]
     end
-    moves.push(curr) if eat_piece_possible?(curr)
+    moves.push([pos, curr]) if eat_piece_possible?(curr)
     moves
   end
 
@@ -88,10 +89,10 @@ class Piece
     moves = [] # max of 7
     curr = [pos[0] + 1, pos[1] + 1]
     until stop_condition(curr)
-      moves.push(curr)
+      moves.push([pos, curr])
       curr = [curr[0] + 1, curr[1] + 1]
     end
-    moves.push(curr) if eat_piece_possible?(curr)
+    moves.push([pos, curr]) if eat_piece_possible?(curr)
     moves
   end
 
@@ -99,10 +100,10 @@ class Piece
     moves = [] # max of 7
     curr = [pos[0] - 1, pos[1] + 1]
     until stop_condition(curr)
-      moves.push(curr)
+      moves.push([pos, curr])
       curr = [curr[0] - 1, curr[1] + 1]
     end
-    moves.push(curr) if eat_piece_possible?(curr)
+    moves.push([pos, curr]) if eat_piece_possible?(curr)
     moves
   end
 
@@ -110,10 +111,10 @@ class Piece
     moves = [] # max of 7
     curr = [pos[0] - 1, pos[1] - 1]
     until stop_condition(curr)
-      moves.push(curr)
+      moves.push([pos, curr])
       curr = [curr[0] - 1, curr[1] - 1]
     end
-    moves.push(curr) if eat_piece_possible?(curr)
+    moves.push([pos, curr]) if eat_piece_possible?(curr)
     moves
   end
 
@@ -121,10 +122,10 @@ class Piece
     moves = [] # max of 7
     curr = [pos[0] + 1, pos[1] - 1]
     until stop_condition(curr)
-      moves.push(curr)
+      moves.push([pos, curr])
       curr = [curr[0] + 1, curr[1] - 1]
     end
-    moves.push(curr) if eat_piece_possible?(curr)
+    moves.push([pos, curr]) if eat_piece_possible?(curr)
     moves
   end
 
@@ -133,6 +134,6 @@ class Piece
   end
 
   def eat_piece_possible?(curr)
-    taken_by_opposite_color_piece?(curr) && !taken_by_opposite_king?(curr) && on_board?(curr)
+    on_board?(curr) && taken_by_opposite_color_piece?(curr) && !taken_by_opposite_king?(curr)
   end
 end
