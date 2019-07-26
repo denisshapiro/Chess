@@ -19,7 +19,6 @@ class Rook < Piece
     possible_moves += backward_line_moves(pos)
     possible_moves += right_line_moves(pos)
     possible_moves += left_line_moves(pos)
-    p possible_moves
     possible_moves
   end
 end

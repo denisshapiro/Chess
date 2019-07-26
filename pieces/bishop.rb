@@ -19,7 +19,6 @@ class Bishop < Piece
     possible_moves += up_left_diagonal_moves(pos)
     possible_moves += down_left_diagonal_moves(pos)
     possible_moves += down_right_diagonal_moves(pos)
-    p possible_moves
     possible_moves
   end
 end

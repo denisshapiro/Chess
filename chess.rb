@@ -139,5 +139,3 @@ class Chess
     end
   end
 end
-
-Chess.new
