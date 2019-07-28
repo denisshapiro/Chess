@@ -15,6 +15,8 @@ class Chess
   attr_accessor :player_color, :computer_color, :board, :turn
   def initialize
     @board = Board.new
+    @player_pieces_arr = []
+    @computer_pieces_arr = []
     choose_color
     set_player_color
     arrange_board
@@ -98,13 +100,17 @@ class Chess
   def arrange_board(bottom_color = @player_color, top_color = @computer_color)
     for x in 0..7
       for y in 0..1
-        y == 1 ? @board.change(x, y, Pawn.new([x, y], bottom_color, @board, top_color, bottom_color)) : @board.change(x, y, setup(x, y, bottom_color))
+        y == 1 ? new_piece = Pawn.new([x, y], bottom_color, @board, top_color, bottom_color) : new_piece = setup(x, y, bottom_color)
+        @board.change(x, y, new_piece)
+        @player_pieces_arr.push(new_piece)
       end
     end
 
     for x in 0..7
       for y in 6..7
-        y == 6 ? @board.change(x, y, Pawn.new([x, y], top_color, @board, top_color, bottom_color)) : @board.change(x, y, setup(x, y, top_color))
+        y == 6 ? new_piece = Pawn.new([x, y], top_color, @board, top_color, bottom_color) : new_piece = setup(x, y, top_color)
+        @board.change(x, y, new_piece)
+        @computer_pieces_arr.push(new_piece)
       end
     end
     @board.display_board
@@ -134,6 +140,7 @@ class Chess
       ask_for_input
       @board.piece_at(@converted[0][0], @converted[0][1]).moves_made += 1
       @board.move(@converted[0], @converted[1])
+      @board.piece_at(@converted[1][0], @converted[1][1]).pos = @converted[1]
       @board.display_board
       switch_turn
     end

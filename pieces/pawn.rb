@@ -2,7 +2,7 @@ require_relative 'piece.rb'
 
 # Class to describe a Pawn's available moves in current possiton
 class Pawn < Piece
-  attr_accessor :possible_moves, :piece, :moves_made
+  attr_accessor :possible_moves, :piece, :moves_made, :pos
 
   def initialize(pos, color, current_board, top_color, bottom_color)
     @pos = pos
