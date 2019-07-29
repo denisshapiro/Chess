@@ -2,7 +2,7 @@ require_relative 'piece.rb'
 
 # Class to describe a Pawn's available moves in current possiton
 class Pawn < Piece
-  attr_accessor :possible_moves, :piece, :moves_made, :pos
+  attr_accessor :possible_moves, :piece, :moves_made, :pos, :king_in_check
 
   def initialize(pos, color, current_board, top_color, bottom_color)
     @pos = pos
@@ -12,6 +12,7 @@ class Pawn < Piece
     @top_color = top_color
     @bottom_color = bottom_color
     @current_board = current_board
+    @king_in_check = false
   end
 
   def pawn_can_eat?(pos)

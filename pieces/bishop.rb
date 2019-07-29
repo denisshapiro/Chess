@@ -3,7 +3,7 @@ require File.expand_path('./helpers.rb')
 
 # Class to describe a Bishop's available moves in current possiton
 class Bishop < Piece
-  attr_accessor :possible_moves, :piece, :moves_made, :pos
+  attr_accessor :possible_moves, :piece, :moves_made, :pos, :king_in_check
 
   def initialize(pos, color, current_board)
     @pos = pos
@@ -11,6 +11,7 @@ class Bishop < Piece
     @piece = Helpers.corresponding_hash(@color)[:Bishop]
     @moves_made = 0
     @current_board = current_board
+    @king_in_check = false
   end
 
   def generate_moves(pos)

@@ -49,4 +49,11 @@ module Helpers
       false
     end
   end
+
+  def self.find_king(piece_arr)
+    piece_arr.each do |piece|
+      return piece if piece.piece == WHITE_PIECES[:King] || piece.piece == BLACK_PIECES[:King]
+    end
+  end
+
 end

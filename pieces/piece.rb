@@ -1,16 +1,10 @@
 require File.expand_path('./piece_hash.rb')
 require File.expand_path('./helpers.rb')
 require File.expand_path('./board.rb')
+require File.expand_path('./check.rb')
 
 # General class for Pieces
 class Piece
-=begin
-  def initialize(pos, color, current_board)
-    @pos = pos
-    @color = color
-    @current_board = current_board
-  end
-=end
 
   def str_or_class(square)
     square.is_a?(String) ? square : square.piece
@@ -129,11 +123,15 @@ class Piece
     moves
   end
 
+  def in_check?(opposite_pieces, king)
+    Check.new(@current_board, opposite_pieces, king, @color)
+  end
+
   def stop_condition(curr)
     !on_board?(curr) || taken_by_another_piece?(curr)
   end
 
   def eat_piece_possible?(curr)
-    on_board?(curr) && taken_by_opposite_color_piece?(curr) && !taken_by_opposite_king?(curr)
+    on_board?(curr) && taken_by_opposite_color_piece?(curr)
   end
 end

@@ -2,6 +2,7 @@ require 'yaml'
 require_relative 'board.rb'
 require_relative 'piece_hash.rb'
 require_relative 'helpers.rb'
+require_relative 'check.rb'
 require_relative './pieces/piece.rb'
 require_relative './pieces/bishop.rb'
 require_relative './pieces/pawn.rb'
@@ -135,9 +136,23 @@ class Chess
       @board.piece_at(@converted[0][0], @converted[0][1]).generate_moves(@converted[0]).include?(@converted)
   end
 
+  def opposite_piece_arr
+    @turn == 'player' ? @computer_pieces_arr : @player_pieces_arr
+  end
+
+  def same_piece_arr
+    @turn == 'player' ? @player_pieces_arr : @computer_pieces_arr
+  end
+
+  def check?
+    Check.new(@board, opposite_piece_arr, Helpers.find_king(same_piece_arr))
+    #Check.new(@board, same_piece_arr, Helpers.find_king(opposite_piece_arr))
+  end
+
   def play_game
     loop do
       ask_for_input
+      check?
       @board.piece_at(@converted[0][0], @converted[0][1]).moves_made += 1
       @board.move(@converted[0], @converted[1])
       @board.piece_at(@converted[1][0], @converted[1][1]).pos = @converted[1]

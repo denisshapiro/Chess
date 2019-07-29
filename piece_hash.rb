@@ -1,5 +1,5 @@
 require 'colorize'
-# Hashes to contain unicode chess symbols 
+# Hashes to contain unicode chess symbols
 module ChessPieces
   WHITE_PIECES = {
     Rook: '♖',

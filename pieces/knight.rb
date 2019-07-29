@@ -3,7 +3,7 @@ require File.expand_path('./helpers.rb')
 
 # Class to describe a Knight's available moves in current possiton
 class Knight < Piece
-  attr_accessor :possible_moves, :piece, :moves_made, :pos
+  attr_accessor :possible_moves, :piece, :moves_made, :pos, :king_in_check
 
   def initialize(pos, color, current_board)
     @pos = pos
@@ -13,6 +13,7 @@ class Knight < Piece
     @current_board = current_board
     @x_moves = [2, 1, -1, -2, -2, -1, 1, 2]
     @y_moves = [1, 2, 2, 1, -1, -2, -2, -1]
+    @king_in_check = false
   end
 
   def knight_move_possible?(curr)
